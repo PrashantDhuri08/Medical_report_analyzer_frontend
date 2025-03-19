@@ -1,0 +1,59 @@
+.app-container {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+h1 {
+  color: #4caf50;
+}
+
+.file-upload {
+  margin: 20px 0;
+}
+
+.upload-label {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#file-input {
+  display: none;
+}
+
+.data-display {
+  margin-top: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.risk-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 15px;
+  display: inline-block;
+  width: 200px;
+}
+
+.risk-card.high {
+  background-color: #ffdddd;
+  border-color: #ff5555;
+}
+
+.risk-card.moderate {
+  background-color: #fff4cc;
+  border-color: #ffcc00;
+}
+
+.risk-card.low {
+  background-color: #ddffdd;
+  border-color: #55ff55;
+}
