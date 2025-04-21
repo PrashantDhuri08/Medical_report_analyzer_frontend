@@ -7,6 +7,7 @@ const RiskAnalysis = () => {
   const [anemiaData, setAnemiaData] = useState(null);
   const [dengueData, setDengueData] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
+  const [noData, setNoData] = useState(false); // No data state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +29,10 @@ const RiskAnalysis = () => {
           ? await dengueResponse.json()
           : null;
         setDengueData(dengueData);
+
+        if (!anemiaData && !dengueData) {
+          setNoData(true);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -64,6 +69,16 @@ const RiskAnalysis = () => {
         <div style={spinnerStyle}></div>
         <p className="text-lg font-semibold text-gray-600 ml-4">
           Loading report...
+        </p>
+      </div>
+    );
+  }
+
+  if (noData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-semibold text-gray-600">
+          Please upload document first.
         </p>
       </div>
     );
@@ -116,7 +131,7 @@ const RiskAnalysis = () => {
   return (
     <div className="grid grid-cols-2 gap-6">
       {/* Anemia Risk Analysis */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-black p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Anemia Risk Analysis</h2>
 
         {/* Circular Progress Indicator */}
@@ -178,7 +193,7 @@ const RiskAnalysis = () => {
       </div>
 
       {/* Dengue Risk Analysis */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-black p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Dengue Risk Analysis</h2>
 
         {/* Circular Progress Indicator */}
