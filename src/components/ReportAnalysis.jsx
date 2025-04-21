@@ -3,6 +3,15 @@ import React, { useState, useEffect } from "react";
 const ReportAnalysis = () => {
   const [reportData, setReportData] = useState(null); // State for report data
   const [loading, setLoading] = useState(true); // State for loading
+  const [userId, setUserId] = useState(null); // State for user ID
+
+  useEffect(() => {
+    // Get user ID from localStorage
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId));
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch report data from the API
@@ -65,6 +74,7 @@ const ReportAnalysis = () => {
           <span className="text-sm text-gray-400">
             Report ID: #CBC12345 • Processed on{" "}
             {new Date().toLocaleDateString()}
+            {userId && ` • User ID: ${userId}`}
           </span>
         </h2>
         <div className="space-x-3">

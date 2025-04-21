@@ -5,10 +5,15 @@ const UploadSection = () => {
   const [showCamera, setShowCamera] = useState(false);
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [showUserForm, setShowUserForm] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   // Handle file selection
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+    setShowUserForm(true);
   };
 
   // Handle camera start
@@ -35,6 +40,7 @@ const UploadSection = () => {
       setStream(null);
     }
     setShowCamera(false);
+    setShowUserForm(true);
   };
 
   // Handle capture photo
@@ -58,8 +64,17 @@ const UploadSection = () => {
       return;
     }
 
+    if (!userEmail) {
+      alert("Please enter your email address.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", file);
+    formData.append("email", userEmail);
+    if (userName) {
+      formData.append("name", userName);
+    }
 
     try {
       const response = await fetch("http://localhost:5000/upload", {
@@ -70,6 +85,13 @@ const UploadSection = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Upload response:", data);
+
+        // Save user ID for future requests
+        if (data.user_id) {
+          setUserId(data.user_id);
+          localStorage.setItem("userId", data.user_id);
+        }
+
         alert(
           "Upload successful! Analysis result: " + JSON.stringify(data.message)
         );
@@ -137,6 +159,42 @@ const UploadSection = () => {
           <p className="text-sm text-gray-400 mt-1">
             Supported formats: JPG, PNG, PDF, TIFF
           </p>
+        </div>
+      )}
+
+      {/* User Information Form */}
+      {showUserForm && (
+        <div className="mb-4 p-4 bg-gray-700 rounded-lg">
+          <h3 className="text-lg font-semibold mb-2 text-white">
+            Your Information
+          </h3>
+          <div className="mb-3">
+            <label htmlFor="userEmail" className="block text-gray-300 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="userEmail"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              className="w-full p-2 rounded bg-gray-600 text-white border border-gray-500"
+              placeholder="your.email@example.com"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="userName" className="block text-gray-300 mb-1">
+              Name (Optional)
+            </label>
+            <input
+              type="text"
+              id="userName"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="w-full p-2 rounded bg-gray-600 text-white border border-gray-500"
+              placeholder="Your Name"
+            />
+          </div>
         </div>
       )}
 

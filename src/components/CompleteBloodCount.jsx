@@ -6,6 +6,13 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
 } from "recharts";
 
 const CompleteBloodCount = () => {
@@ -14,6 +21,16 @@ const CompleteBloodCount = () => {
   const [radarData, setRadarData] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
   const [errorState, setErrorState] = useState(false); // Error state
+  const [trendData, setTrendData] = useState({}); // State for trend data
+  const [userId, setUserId] = useState(null); // User ID state
+
+  // Get user ID from localStorage
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId));
+    }
+  }, []);
 
   // Fetch data from the API
   const fetchData = async () => {
@@ -99,6 +116,11 @@ const CompleteBloodCount = () => {
 
         setBloodCountData(bloodCountTableData);
         setRadarData(radarChartData);
+
+        // Fetch trend data if user ID is available
+        if (userId) {
+          fetchTrendData();
+        }
       } else {
         console.error("Failed to fetch data from the API");
         setErrorState(true); // Set error state on failed fetch
@@ -111,10 +133,29 @@ const CompleteBloodCount = () => {
     }
   };
 
-  // Fetch data on component mount
+  // Fetch trend data from the API
+  const fetchTrendData = async () => {
+    if (!userId) return; // Don't fetch if no user ID
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/user/${userId}/trends`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTrendData(data.trends);
+      } else {
+        console.error("Failed to fetch trend data");
+      }
+    } catch (error) {
+      console.error("Error fetching trend data:", error);
+    }
+  };
+
+  // Fetch data on component mount and when userId changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [userId]);
 
   // Rotating Spinner CSS
   const spinnerStyle = {
@@ -164,12 +205,31 @@ const CompleteBloodCount = () => {
     );
   }
 
+  // Render trend chart if available
+  const renderTrendChart = (parameter) => {
+    if (trendData[parameter]) {
+      return (
+        <div className="mt-4">
+          <h4 className="text-md font-semibold mb-2 text-white">
+            {parameter.replace("_", " ").toUpperCase()} Trend
+          </h4>
+          <img
+            src={`data:image/png;base64,${trendData[parameter]}`}
+            alt={`${parameter} trend`}
+            className="w-full rounded-lg"
+          />
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="grid grid-cols-2 gap-6 mt-4">
       {/* Left Section: Complete Blood Count Details Table */}
       <div className="bg-gray-500 p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
-          Complete Blood Count Details
+          Complete Blood Count Details {userId && `• User ID: ${userId}`}
         </h2>
         <table className="w-full text-left">
           <thead>
@@ -215,12 +275,15 @@ const CompleteBloodCount = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Trend Analysis Placeholder */}
-        <h3 className="text-lg font-semibold mt-6 mb-2">
-          Trend Analysis (Last 3 Tests)
+        {/* Trend Analysis */}
+        <h3 className="text-lg font-semibold mt-6 mb-2 text-white">
+          Trend Analysis
         </h3>
-        <div className="h-24 bg-gray-100 rounded-lg flex items-center justify-center">
-          <p className="text-gray-500">Trend Analysis Chart Placeholder</p>
+        <div className="grid grid-cols-2 gap-4">
+          {renderTrendChart("hemoglobin")}
+          {renderTrendChart("rbc_count")}
+          {renderTrendChart("wbc_count")}
+          {renderTrendChart("platelet_count")}
         </div>
       </div>
 

@@ -8,6 +8,15 @@ const RiskAnalysis = () => {
   const [dengueData, setDengueData] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
   const [noData, setNoData] = useState(false); // No data state
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    // Get user ID from localStorage
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +141,9 @@ const RiskAnalysis = () => {
     <div className="grid grid-cols-2 gap-6">
       {/* Anemia Risk Analysis */}
       <div className="bg-black p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Anemia Risk Analysis</h2>
+        <h2 className="text-xl text-white font-semibold mb-4">
+          Anemia Risk Analysis {userId && `• User ID: ${userId}`}
+        </h2>
 
         {/* Circular Progress Indicator */}
         <div className="flex items-center mb-4">
@@ -194,7 +205,9 @@ const RiskAnalysis = () => {
 
       {/* Dengue Risk Analysis */}
       <div className="bg-black p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Dengue Risk Analysis</h2>
+        <h2 className="text-xl text-white font-semibold mb-4">
+          Dengue Risk Analysis
+        </h2>
 
         {/* Circular Progress Indicator */}
         <div className="flex items-center mb-4">
