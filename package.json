@@ -10,7 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^0.7.0",
+    "@google/generative-ai": "^0.24.0",
+    "@splinetool/react-spline": "^4.0.0",
     "@tailwindcss/vite": "^4.0.14",
+    "lucide-react": "^0.486.0",
+    "mime-types": "^3.0.1",
     "react": "^19.0.0",
     "react-circular-progressbar": "^2.2.0",
     "react-dom": "^19.0.0",

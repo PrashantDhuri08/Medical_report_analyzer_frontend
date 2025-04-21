@@ -8,15 +8,20 @@ import Sidebar from "./components/Sidebar";
 import HowItWorks from "./components/HowItWorks";
 import CompleteBloodCount from "./components/CompleteBloodCount";
 import RiskAnalysis from "./components/RiskAnalysis";
+// import Glass from "./components/Glass";
+import Chatbot from "./components/Chatbot";
 
 const App = () => {
   return (
     <div className="app-container">
       {/* <Sidebar /> */}
       <UploadSection />
+
       <ReportAnalysis />
       <CompleteBloodCount />
       <RiskAnalysis />
+      <Chatbot />
+
       {/* error state for report analysis component and RiskAnalysis component */}
 
       <HowItWorks />

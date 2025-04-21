@@ -3,7 +3,7 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
+    <div className="bg-black mt-4 p-6 rounded-lg shadow border-4 ">
       <h2 className="text-xl font-semibold mb-4">How It Works</h2>
       <div className="space-y-4">
         <div className="flex items-start">

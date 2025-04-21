@@ -33,7 +33,7 @@ const CompleteBloodCount = () => {
           },
           {
             test: "Hematocrit (Hct)",
-            result: `${data.Hct}%`,
+            result: `${data["Hct"] || data["PCV"]} %`,
             normalRange: "36-46%",
           },
           {
@@ -43,7 +43,9 @@ const CompleteBloodCount = () => {
           },
           {
             test: "White Blood Cell Count (WBC)",
-            result: `${data["Total Leucocyte Count"]}/mcL`,
+            result: `${
+              data["Total Leucocyte Count"] || data["Total WBC Count"]
+            }/mcL`,
             normalRange: "4,500-11,000/mcL",
           },
           {
@@ -72,7 +74,7 @@ const CompleteBloodCount = () => {
           },
           {
             parameter: "Hematocrit",
-            value: parseFloat(data.Hct),
+            value: parseFloat(data["Hct"] || data["PCV"]),
             fullMark: 46,
           },
           {
@@ -87,7 +89,10 @@ const CompleteBloodCount = () => {
           },
           {
             parameter: "WBC",
-            value: parseFloat(data["Total Leucocyte Count"]) / 1000,
+            value:
+              parseFloat(
+                data["Total Leucocyte Count"] || data["Total WBC Count"]
+              ) / 1000,
             fullMark: 11,
           },
         ];
@@ -160,9 +165,9 @@ const CompleteBloodCount = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-2 gap-6 mt-4">
       {/* Left Section: Complete Blood Count Details Table */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-gray-500 p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
           Complete Blood Count Details
         </h2>
@@ -187,7 +192,7 @@ const CompleteBloodCount = () => {
       </div>
 
       {/* Right Section: Blood Parameters Visualization and Trend Analysis */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-gray-600 p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
           Blood Parameters Visualization
         </h2>
